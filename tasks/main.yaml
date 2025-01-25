@@ -101,13 +101,13 @@
     content: |
       #!/bin/sh
       set -euf -o pipefail
+      {% if flatpak_proxy != "" %-}
 
-      {% if flatpak_proxy != "" %}
       export https_proxy="{{ flatpak_proxy }}"
       export http_proxy="{{ flatpak_proxy }}"
       {% endif %}
 
-      {{ flatpak_auto_update_cmd_prefix ~ " " if flatpak_auto_update_cmd_prefix is defined else "" }}flatpak update --noninteractive {{ flatpak_auto_update_cmd_suffix }}
+      {{ flatpak_auto_update_cmd_prefix ~ " " if flatpak_auto_update_cmd_prefix is defined and flatpak_auto_update_cmd_prefix != "" else "" }}flatpak update --noninteractive {{ flatpak_auto_update_cmd_suffix }}
 
       {% if flatpak_auto_update_delete_unused -%}
       flatpak remove --unused --noninteractive
