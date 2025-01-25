@@ -30,9 +30,9 @@ flatpak_install_desktop_portal: true
 
 flatpak_proxy: ""  # http://ip:port
 
-flatpak_auto_update: false
-flatpak_auto_update_script_path: /etc/cron.daily/flatpak-update
-flatpak_auto_update_cmd_prefix: ""
-flatpak_auto_update_cmd_suffix: ">/dev/null"
+flatpak_update_script: false
+flatpak_update_script_script_path: /etc/cron.daily/flatpak-update
+flatpak_update_script_cmd_prefix: ""
+flatpak_update_script_cmd_suffix: ">/dev/null"
 
-flatpak_auto_update_delete_unused: true
+flatpak_update_script_delete_unused: true
