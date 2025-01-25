@@ -28,28 +28,50 @@
   ansible.builtin.fail: msg="The operating system is not supported by the Flatpak role"
   when: ansible_os_family != "Debian" and ansible_os_family != "Gentoo" and ansible_os_family != "Archlinux"
 
-- name: "Install Flatpak on Arch Linux"
-  when: ansible_os_family == "Archlinux"
-  community.general.pacman:
-    name:
-      - flatpak
-      - xdg-desktop-portal-gtk
+- name: Install flatpak
+  block:
+    - name: "Install Flatpak on Arch Linux"
+      when: ansible_os_family == "Archlinux"
+      community.general.pacman:
+        name:
+          - flatpak
 
-- name: "Install Flatpak on Debian family"
-  when: ansible_os_family == "Debian"
-  ansible.builtin.apt:
-    name:
-      - flatpak
-      - xdg-desktop-portal-gtk
+    - name: "Install Flatpak on Debian family"
+      when: ansible_os_family == "Debian"
+      ansible.builtin.apt:
+        name:
+          - flatpak
 
-- name: "Install Flatpak on Gentoo"
-  when: ansible_os_family == "Gentoo"
-  community.general.portage:
-    state: present
-    package: "{{ item }}"
-  loop:
-    - sys-apps/flatpak
-    - sys-apps/xdg-desktop-portal-gtk
+    - name: "Install Flatpak on Gentoo"
+      when: ansible_os_family == "Gentoo"
+      community.general.portage:
+        state: present
+        package: "{{ item }}"
+      loop:
+        - sys-apps/flatpak
+
+- name: Install desktop portal
+  when: flatpak_install_desktop_portal == "gtk"
+  block:
+    - name: "Install Flatpak on Arch Linux"
+      when: ansible_os_family == "Archlinux"
+      community.general.pacman:
+        name:
+          - xdg-desktop-portal-gtk
+
+    - name: "Install Flatpak on Debian family"
+      when: ansible_os_family == "Debian"
+      ansible.builtin.apt:
+        name:
+          - xdg-desktop-portal-gtk
+
+    - name: "Install Flatpak on Gentoo"
+      when: ansible_os_family == "Gentoo"
+      community.general.portage:
+        state: present
+        package: "{{ item }}"
+      loop:
+        - sys-apps/xdg-desktop-portal-gtk
 
 - name: "Flatpak: Add Flathub"
   community.general.flatpak_remote:
@@ -78,9 +100,15 @@
     mode: "0750"
     content: |
       #!/bin/sh
+      set -euf -o pipefail
+
       {% if flatpak_proxy != "" %}
       export https_proxy="{{ flatpak_proxy }}"
       export http_proxy="{{ flatpak_proxy }}"
       {% endif %}
+
       {{ flatpak_auto_update_cmd_prefix ~ " " if flatpak_auto_update_cmd_prefix is defined else "" }}flatpak update --noninteractive {{ flatpak_auto_update_cmd_suffix }}
+
+      {% if flatpak_auto_update_delete_unused -%}
       flatpak remove --unused --noninteractive
+      {% endif %}

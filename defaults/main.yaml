@@ -24,9 +24,14 @@
 # SOFTWARE.
 #
 
+flatpak_packages: []
+
+flatpak_install_desktop_portal: true
 
 flatpak_proxy: ""  # http://ip:port
 
 flatpak_auto_update: false
 flatpak_auto_update_cmd_prefix: ""
 flatpak_auto_update_cmd_suffix: ">/dev/null"
+
+flatpak_auto_update_delete_unused: true

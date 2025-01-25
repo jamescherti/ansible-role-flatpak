@@ -5,22 +5,24 @@ The `ansible-role-flatpak` Ansible role installs and configures Flatpak, adds Fl
 
 ## Requirements
 
-- Supported operating systems: Debian/Ubuntu (and their derivatives), Gentoo, Arch Linux.
+- Supported operating systems: Debian/Ubuntu (and their derivatives), Gentoo, or Arch Linux.
 - Ansible
 - Ansible collections:
-  - `community.general`
+  - community.general
 
 ## Role Variables
 
 The following variables can be set to customize the role's behavior:
 
-| Variable                   | Description                                                                                         | Default       |
-|----------------------------|-----------------------------------------------------------------------------------------------------|---------------|
-| `flatpak_proxy`            | Proxy settings for Flatpak (optional). Leave empty if not using a proxy.                           | `""`          |
-| `flatpak_packages`         | List of Flatpak packages to install from Flathub.                                                  | `[]`          |
-| `flatpak_auto_update`      | Whether to enable automatic daily updates and cleanup of Flatpak packages.                         | `false`       |
-| `flatpak_auto_update_cmd_prefix` | Optional prefix command to run before the Flatpak update command (e.g., `nice`, `ionice`).    | Not defined   |
-| `flatpak_auto_update_cmd_suffix` | Optional suffix to append to the Flatpak update command.                                      | Not defined   |
+| Variable                            | Description                                                                                   | Default       |
+|-------------------------------------|-----------------------------------------------------------------------------------------------|---------------|
+| `flatpak_packages`                  | List of Flatpak packages to install from Flathub.                                             | `[]`          |
+| `flatpak_auto_update`               | Whether to enable automatic daily updates and cleanup of Flatpak packages.                    | `false`       |
+| `flatpak_auto_update_cmd_prefix`    | Optional prefix command to run before the Flatpak update command (e.g., `nice`, `ionice`).    | ""            |
+| `flatpak_auto_update_cmd_suffix`    | Optional suffix to append to the Flatpak update command.                                      | ">/dev/null"  |
+| `flatpak_auto_update_delete_unused` | Delete unused flatpak packages after a successful update                                      | true          |
+| `flatpak_proxy`                     | Proxy settings for Flatpak (optional). Leave empty if not using a proxy.                      | `""`          |
+| `flatpak_install_desktop_portal`    | Install the GTK desktop portal.                                                               | `gtk`         |
 
 ## Author and license
 
