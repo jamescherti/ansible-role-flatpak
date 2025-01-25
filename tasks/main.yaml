@@ -109,6 +109,6 @@
 
       {{ flatpak_update_script_cmd_prefix ~ " " if flatpak_update_script_cmd_prefix is defined and flatpak_update_script_cmd_prefix != "" else "" }}flatpak update --noninteractive {{ flatpak_update_script_cmd_suffix }}
 
-      {% if flatpak_update_script_delete_unused -%}
+      {% if flatpak_update_script_remove_unused -%}
       flatpak remove --unused --noninteractive
       {% endif %}

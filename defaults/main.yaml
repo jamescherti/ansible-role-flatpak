@@ -35,4 +35,4 @@ flatpak_update_script_script_path: /etc/cron.daily/flatpak-update
 flatpak_update_script_cmd_prefix: ""
 flatpak_update_script_cmd_suffix: ">/dev/null"
 
-flatpak_update_script_delete_unused: true
+flatpak_update_script_remove_unused: true
