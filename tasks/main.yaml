@@ -1,0 +1,86 @@
+---
+#
+# Copyright (C) 2020-2025 James Cherti
+# URL: https://github.com/jamescherti/ansible-role-flatpak
+#
+# Distributed under terms of the MIT license.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+- name: "Fail: The operating system is not supported by the Flatpak role"
+  ansible.builtin.fail: msg="The operating system is not supported by the Flatpak role"
+  when: ansible_os_family != "Debian" and ansible_os_family != "Gentoo" and ansible_os_family != "Archlinux"
+
+- name: "Install Flatpak on Arch Linux"
+  when: ansible_os_family == "Archlinux"
+  community.general.pacman:
+    name:
+      - flatpak
+      - xdg-desktop-portal-gtk
+
+- name: "Install Flatpak on Debian family"
+  when: ansible_os_family == "Debian"
+  ansible.builtin.apt:
+    name:
+      - flatpak
+      - xdg-desktop-portal-gtk
+
+- name: "Install Flatpak on Gentoo"
+  when: ansible_os_family == "Gentoo"
+  community.general.portage:
+    state: present
+    package: "{{ item }}"
+  loop:
+    - sys-apps/flatpak
+    - sys-apps/xdg-desktop-portal-gtk
+
+- name: "Flatpak: Add Flathub"
+  community.general.flatpak_remote:
+    name: flathub
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    state: present
+    method: system
+  environment: "{{ {'http_proxy': flatpak_proxy, 'https_proxy': flatpak_proxy} if flatpak_proxy != '' else {} }}"
+
+- name: "Flatpak: install packages"
+  when: flatpak_packages|length > 0
+  community.general.flatpak:
+    name: "{{ item }}"
+    remote: flathub
+    state: present
+    method: system
+  loop: "{{ flatpak_packages }}"
+  environment: "{{ {'http_proxy': flatpak_proxy, 'https_proxy': flatpak_proxy} if flatpak_proxy != '' else {} }}"
+
+- name: "File: /etc/cron.daily/flatpak-update"
+  when: flatpak_auto_update
+  ansible.builtin.copy:
+    dest: "/etc/cron.daily/flatpak-update"
+    owner: root
+    group: root
+    mode: "0750"
+    content: |
+      #!/bin/sh
+      {% if flatpak_proxy != "" %}
+      export https_proxy="{{ flatpak_proxy }}"
+      export http_proxy="{{ flatpak_proxy }}"
+      {% endif %}
+      {{ flatpak_auto_update_cmd_prefix ~ " " if flatpak_auto_update_cmd_prefix is defined else "" }}flatpak update --noninteractive {{ flatpak_auto_update_cmd_suffix }}
+      flatpak remove --unused --noninteractive
