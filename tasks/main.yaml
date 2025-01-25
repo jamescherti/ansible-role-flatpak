@@ -91,10 +91,10 @@
   loop: "{{ flatpak_packages }}"
   environment: "{{ {'http_proxy': flatpak_proxy, 'https_proxy': flatpak_proxy} if flatpak_proxy != '' else {} }}"
 
-- name: "File: /etc/cron.daily/flatpak-update"
+- name: "Install the flatpak update script"
   when: flatpak_auto_update
   ansible.builtin.copy:
-    dest: "/etc/cron.daily/flatpak-update"
+    dest: "{{ flatpak_auto_update_script_path }}"
     owner: root
     group: root
     mode: "0750"
