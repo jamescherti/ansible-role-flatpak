@@ -99,8 +99,8 @@
     group: root
     mode: "0750"
     content: |
-      #!/bin/sh
-      set -euf -o pipefail
+      #!/usr/bin/env sh
+      set -eu
       {% if flatpak_proxy != "" -%}
 
       export https_proxy="{{ flatpak_proxy }}"
