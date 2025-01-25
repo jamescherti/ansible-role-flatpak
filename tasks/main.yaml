@@ -101,7 +101,7 @@
     content: |
       #!/bin/sh
       set -euf -o pipefail
-      {% if flatpak_proxy != "" %-}
+      {% if flatpak_proxy != "" -%}
 
       export https_proxy="{{ flatpak_proxy }}"
       export http_proxy="{{ flatpak_proxy }}"
