@@ -27,6 +27,8 @@ The following variables can be set to customize the role's behavior:
 
 ## Author and license
 
+The *ansible-role-flatpak* role has been written by [James Cherti](https://www.jamescherti.com/) and is distributed under terms of the MIT license.
+
 Copyright (C) 2025 [James Cherti](https://www.jamescherti.com).
 
 Distributed under terms of the MIT license.
