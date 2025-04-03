@@ -26,7 +26,7 @@
 
 flatpak_packages: []
 
-flatpak_install_desktop_portal: true
+flatpak_install_desktop_portal: gtk
 
 flatpak_proxy: ""  # http://ip:port
 
