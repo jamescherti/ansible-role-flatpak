@@ -26,7 +26,8 @@
 
 flatpak_packages: []
 
-flatpak_install_desktop_portal: gtk
+# Supported desktop portals: gtk, gnome
+flatpak_install_desktop_portal: ["gtk"]
 
 flatpak_proxy: ""  # http://ip:port
 
