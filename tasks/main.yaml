@@ -51,7 +51,34 @@
         - sys-apps/flatpak
 
 - name: Install desktop portal
-  when: flatpak_install_desktop_portal == "gtk"
+  when: flatpak_install_desktop_portal == "gnome" or
+        (flatpak_install_desktop_portal is iterable and
+         'gnome' in flatpak_install_desktop_portal)
+  block:
+    - name: "Install Flatpak on Arch Linux"
+      when: ansible_os_family == "Archlinux"
+      community.general.pacman:
+        name:
+          - xdg-desktop-portal-gnome
+
+    - name: "Install Flatpak on Debian family"
+      when: ansible_os_family == "Debian"
+      ansible.builtin.apt:
+        name:
+          - xdg-desktop-portal-gnome
+
+    - name: "Install Flatpak on Gentoo"
+      when: ansible_os_family == "Gentoo"
+      community.general.portage:
+        state: present
+        package: "{{ item }}"
+      loop:
+        - sys-apps/xdg-desktop-portal-gnome
+
+- name: Install desktop portal
+  when: flatpak_install_desktop_portal == "gtk" or
+        (flatpak_install_desktop_portal is iterable and
+         'gtk' in flatpak_install_desktop_portal)
   block:
     - name: "Install Flatpak on Arch Linux"
       when: ansible_os_family == "Archlinux"
