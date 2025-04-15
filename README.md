@@ -21,7 +21,7 @@ The following variables can be set to customize the role's behavior:
 | `flatpak_update_script_cmd_suffix`    | Optional suffix to append to the Flatpak update command.                                                                                     | '>/dev/null'                     |
 | `flatpak_update_script_remove_unused` | Delete unused Flatpak packages after a successful update                                                                                     | true                             |
 | `flatpak_update_script_script_path`   | Path to the update script.                                                                                                                   | '/etc/cron.daily/flatpak-update' |
-| `flatpak_install_desktop_portal`      | Install the desktop portal. Values: '' (no desktop portal), "gtk", or "gnome". Can be a string or a list of values, such as ["gtk", "gnome"] | 'gtk'                            |
+| `flatpak_install_desktop_portal`      | Install the desktop portal. Values: '' (no desktop portal), "gtk", or "gnome". Can be a string or a list of values, such as ["gtk", "gnome"] | ['gtk']                          |
 | `flatpak_proxy`                       | Proxy settings for Flatpak (optional). Leave empty if not using a proxy.                                                                     | ''                               |
 
 ## Author and license
