@@ -103,7 +103,7 @@
 - name: "Flatpak: Add Flathub"
   community.general.flatpak_remote:
     name: flathub
-    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     state: present
     method: system
   environment: "{{ {'http_proxy': flatpak_proxy, 'https_proxy': flatpak_proxy} if flatpak_proxy != '' else {} }}"
