@@ -119,7 +119,7 @@
   environment: "{{ {'http_proxy': flatpak_proxy, 'https_proxy': flatpak_proxy} if flatpak_proxy != '' else {} }}"
 
 - name: "Install the flatpak update script"
-  when: flatpak_update_script
+  when: flatpak_update_script | bool
   ansible.builtin.copy:
     dest: "{{ flatpak_update_script_script_path }}"
     owner: root
