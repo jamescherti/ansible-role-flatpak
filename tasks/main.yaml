@@ -26,24 +26,24 @@
 
 - name: "Fail: The operating system is not supported by the Flatpak role"
   ansible.builtin.fail: msg="The operating system is not supported by the Flatpak role"
-  when: ansible_os_family != "Debian" and ansible_os_family != "Gentoo" and ansible_os_family != "Archlinux"
+  when: ansible_facts.os_family != "Debian" and ansible_facts.os_family != "Gentoo" and ansible_facts.os_family != "Archlinux"
 
 - name: Install flatpak
   block:
     - name: "Install Flatpak on Arch Linux"
-      when: ansible_os_family == "Archlinux"
+      when: ansible_facts.os_family == "Archlinux"
       community.general.pacman:
         name:
           - flatpak
 
     - name: "Install Flatpak on Debian family"
-      when: ansible_os_family == "Debian"
+      when: ansible_facts.os_family == "Debian"
       ansible.builtin.apt:
         name:
           - flatpak
 
     - name: "Install Flatpak on Gentoo"
-      when: ansible_os_family == "Gentoo"
+      when: ansible_facts.os_family == "Gentoo"
       community.general.portage:
         state: present
         package: "{{ item }}"
@@ -56,19 +56,19 @@
          'gnome' in flatpak_install_desktop_portal)
   block:
     - name: "Install Flatpak on Arch Linux"
-      when: ansible_os_family == "Archlinux"
+      when: ansible_facts.os_family == "Archlinux"
       community.general.pacman:
         name:
           - xdg-desktop-portal-gnome
 
     - name: "Install Flatpak on Debian family"
-      when: ansible_os_family == "Debian"
+      when: ansible_facts.os_family == "Debian"
       ansible.builtin.apt:
         name:
           - xdg-desktop-portal-gnome
 
     - name: "Install Flatpak on Gentoo"
-      when: ansible_os_family == "Gentoo"
+      when: ansible_facts.os_family == "Gentoo"
       community.general.portage:
         state: present
         package: "{{ item }}"
@@ -81,19 +81,19 @@
          'gtk' in flatpak_install_desktop_portal)
   block:
     - name: "Install Flatpak on Arch Linux"
-      when: ansible_os_family == "Archlinux"
+      when: ansible_facts.os_family == "Archlinux"
       community.general.pacman:
         name:
           - xdg-desktop-portal-gtk
 
     - name: "Install Flatpak on Debian family"
-      when: ansible_os_family == "Debian"
+      when: ansible_facts.os_family == "Debian"
       ansible.builtin.apt:
         name:
           - xdg-desktop-portal-gtk
 
     - name: "Install Flatpak on Gentoo"
-      when: ansible_os_family == "Gentoo"
+      when: ansible_facts.os_family == "Gentoo"
       community.general.portage:
         state: present
         package: "{{ item }}"
