@@ -1,4 +1,4 @@
-# ansible-role-flatpak
+# ansible-role-flatpak - An Ansible role that configures Flatpak, adds Flathub as a remote repository, and manages Flatpak packages and updates
 ![License](https://img.shields.io/github/license/jamescherti/ansible-role-flatpak)
 
 The [ansible-role-flatpak](https://github.com/jamescherti/ansible-role-flatpak) Ansible role installs and configures Flatpak, adds Flathub as a remote repository, and optionally manages Flatpak packages and updates. This role supports specific Linux distributions: Debian-based, Gentoo, and Arch Linux.
