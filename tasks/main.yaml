@@ -46,9 +46,8 @@
       when: ansible_facts.os_family == "Gentoo"
       community.general.portage:
         state: present
-        package: "{{ item }}"
-      loop:
-        - sys-apps/flatpak
+        package:
+          - sys-apps/flatpak
 
 - name: Install desktop portal
   when: flatpak_install_desktop_portal == "gnome" or
@@ -71,9 +70,8 @@
       when: ansible_facts.os_family == "Gentoo"
       community.general.portage:
         state: present
-        package: "{{ item }}"
-      loop:
-        - sys-apps/xdg-desktop-portal-gnome
+        package:
+          - sys-apps/xdg-desktop-portal-gnome
 
 - name: Install desktop portal
   when: flatpak_install_desktop_portal == "gtk" or
@@ -96,9 +94,8 @@
       when: ansible_facts.os_family == "Gentoo"
       community.general.portage:
         state: present
-        package: "{{ item }}"
-      loop:
-        - sys-apps/xdg-desktop-portal-gtk
+        package:
+          - sys-apps/xdg-desktop-portal-gtk
 
 - name: "Flatpak: Add Flathub"
   community.general.flatpak_remote:
