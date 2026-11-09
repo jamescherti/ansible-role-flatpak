@@ -124,15 +124,17 @@
     mode: "0750"
     content: |
       #!/usr/bin/env sh
-      set -eu
       {% if flatpak_proxy != "" -%}
 
       export https_proxy="{{ flatpak_proxy }}"
       export http_proxy="{{ flatpak_proxy }}"
+      unset HTTPS_PROXY >/dev/null 2>&1 || true
+      unset HTTP_PROXY >/dev/null 2>&1 || true
+      unset ALL_PROXY >/dev/null 2>&1 || true
       {% endif %}
 
-      {{ flatpak_update_script_cmd_prefix ~ " " if flatpak_update_script_cmd_prefix is defined and flatpak_update_script_cmd_prefix != "" else "" }} flatpak update --noninteractive {{ flatpak_update_script_cmd_suffix }}
+      {{ flatpak_update_script_cmd_prefix ~ " " if flatpak_update_script_cmd_prefix is defined and flatpak_update_script_cmd_prefix != "" else "" }}flatpak update --noninteractive {{ flatpak_update_script_cmd_suffix }} || exit 1
 
       {% if flatpak_update_script_remove_unused -%}
-      {{ flatpak_update_script_cmd_prefix ~ " " if flatpak_update_script_cmd_prefix is defined and flatpak_update_script_cmd_prefix != "" else "" }} flatpak remove --unused --noninteractive {{ flatpak_update_script_cmd_suffix }}
+      {{ flatpak_update_script_cmd_prefix ~ " " if flatpak_update_script_cmd_prefix is defined and flatpak_update_script_cmd_prefix != "" else "" }}flatpak remove --unused --noninteractive {{ flatpak_update_script_cmd_suffix }} || exit 1
       {% endif %}
